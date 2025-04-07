@@ -1,3 +1,9 @@
+## 0. Export this repository 
+
+**Quickest way**: Export this repository and import or drag & drop this zip on the Home of AI Builder.  
+**Git way**: Clone this repository, create a workspace and link your repo to your workspace.  
+Refer to [AI Builder Versionning Docs](https://docs.prisme.ai/products/ai-builder/deployment).
+
 ## 1. Create an AI Knowledge Agent (RAG)
 
 Set up a new AI Knowledge Agent.
