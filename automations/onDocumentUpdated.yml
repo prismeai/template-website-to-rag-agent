@@ -1,0 +1,23 @@
+slug: onDocumentUpdated
+name: 'Website scrapping/Crawler : On doc update'
+do:
+  - conditions:
+      '{{run.trigger.value}} == "Crawler.deletePage"':
+        - Knowledge Client.deleteDocument:
+            data:
+              id: '{{payload.data.id}}'
+            output: output
+        - break: {}
+  - conditions:
+      '{{payload.body.type}} != "item.scraped"':
+        - break: {}
+  - wait:
+      timeout: 5
+  - indexCrawlerPageInAIK:
+      pageId: '{{payload.body.data.id}}'
+      output: output
+when:
+  events:
+    - Crawler.notifications
+    - Crawler.deletePage
+output: '{{output}}'

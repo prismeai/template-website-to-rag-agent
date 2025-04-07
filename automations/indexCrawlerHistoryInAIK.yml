@@ -1,0 +1,50 @@
+slug: indexCrawlerHistoryInAIK
+name: 'Website scrapping/AIK : Bulk index from entire crawler history'
+do:
+  - all:
+      - Knowledge Client.listDocuments:
+          output: aikDocuments
+      - Crawler.getHistory:
+          query:
+            per_page: 1000
+          output: output
+  - set:
+      name: totalDocs
+      value: 0
+  - set:
+      name: newDocuments
+      value: []
+  - repeat:
+      'on': '{{output.crawl_history}}'
+      do:
+        - set:
+            name: totalDocs
+            value: '{% {{totalDocs}} + 1 %}'
+        - conditions:
+            '!({{item.id}} in {{aikDocuments}})':
+              - conditions:
+                  '{{dryRun}}':
+                    - set:
+                        name: newDocuments[]
+                        value: '{{item.id}}'
+                  default:
+                    - indexCrawlerPageInAIK:
+                        pageId: '{{item.id}}'
+                        output: result
+                    - set:
+                        name: newDocuments[]
+                        value: '{{result}}'
+                    - conditions:
+                        ({{newDocuments.length}} % 10) == 0:
+                          - wait:
+                              timeout: 1
+when:
+  events: []
+output:
+  totalDocuments: '{{totalDocs}}'
+  newDocuments:
+    count: '{{newDocuments.length}}'
+    result: '{{newDocuments}}'
+arguments:
+  dryRun:
+    type: boolean

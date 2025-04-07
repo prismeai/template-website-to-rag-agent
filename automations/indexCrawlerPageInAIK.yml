@@ -1,0 +1,31 @@
+slug: indexCrawlerPageInAIK
+name: 'Website scrapping/AIK : Index a document from crawler'
+do:
+  - Crawler.getPage:
+      pageId: '{{pageId}}'
+      output: page
+  - conditions:
+      '!{{page.body.length}}':
+        - set:
+            name: output
+            value:
+              error: PageNotFound
+              message: >-
+                Provided page id {{pageId}} does not match with any crawled
+                content
+        - break: {}
+  - Knowledge Client.createDocument:
+      data:
+        externalId: '{{pageId}}'
+        name: '{{page.meta.title}}'
+        content:
+          text: '{{page.body}}'
+          url: https://{{pageId}}
+        upsert: true
+      output: output
+arguments:
+  pageId:
+    type: string
+output:
+  pageId: '{{pageId}}'
+  result: '{{output}}'

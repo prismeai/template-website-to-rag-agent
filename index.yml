@@ -1,0 +1,21 @@
+id: RQhgYs_
+description: >-
+  Website to Chatbot base template : crawl a website and generate an AI
+  Knowledge base.
+photo: >-
+  https://prismeai-uploads-prod.oss.eu-west-0.prod-cloud-ocb.orange-business.com/RQhgYs_/YdL7rNnO_d1D7WMt0ywT9.ezgif-1-4951973902.jpg
+config:
+  schema:
+    useNLU:
+      type: boolean
+      title: Use NLU
+  value:
+    useNLU: false
+labels:
+  - suggestions
+  - production:product
+blocks: {}
+name: Website to RAG template
+slug: genai-website-to-chatbot-template
+customDomains: []
+repositories: {}
